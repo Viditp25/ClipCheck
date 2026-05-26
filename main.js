@@ -552,17 +552,17 @@ async function analyzeAudioBuffer(audioBuffer) {
   // Calculate Score Deductions
   let score = 100;
   
-  // Clipping deduction: Deduct 4% per frame block
-  const clippingDeduction = clippingCount * 4;
+  // Clipping deduction: Proportional deduction (e.g. 25% clipping ratio = 100% deduction)
+  const clippingDeduction = totalBlocks > 0 ? (clippingCount / totalBlocks) * 400 : 0;
   
-  // Too Quiet deduction: Deduct 1% per frame block
+  // Too Quiet deduction: Proportional deduction (e.g. 100% quiet ratio = 100% deduction)
   const tooQuietCount = blocks.filter(b => b.state === 'Too Quiet').length;
-  const tooQuietDeduction = tooQuietCount * 1;
+  const tooQuietDeduction = totalBlocks > 0 ? (tooQuietCount / totalBlocks) * 100 : 0;
   
-  // Dead Air deduction: Deduct 3% per continuous second
-  const deadAirDeduction = Math.floor(deadAirSeconds) * 3;
+  // Dead Air deduction: Proportional deduction (e.g. 33.3% dead air ratio = 100% deduction)
+  const deadAirDeduction = totalDuration > 0 ? (deadAirSeconds / totalDuration) * 300 : 0;
   
-  score = score - (clippingDeduction + tooQuietDeduction + deadAirDeduction);
+  score = Math.round(score - (clippingDeduction + tooQuietDeduction + deadAirDeduction));
   score = Math.max(0, Math.min(100, score));
   
   // Assemble Error Logs (merge adjacent blocks of the same abnormal state)
@@ -842,14 +842,17 @@ function calculateStatsFromBlocks(blocks, blockDuration = 0.1) {
   const finalPeakDb = peakMax;
   const finalAvgDb = validRmsCount > 0 ? (rmsSum / validRmsCount) : -100;
   
-  // Deductions
+  // Deductions (proportional to segment length)
   let score = 100;
-  const clippingDeduction = clippingCount * 4;
-  const tooQuietCount = blocks.filter(b => b.state === 'Too Quiet').length;
-  const tooQuietDeduction = tooQuietCount * 1;
-  const deadAirDeduction = Math.floor(deadAirSeconds) * 3;
+  const totalBlocks = blocks.length;
+  const totalDuration = totalBlocks * blockDuration;
   
-  score = score - (clippingDeduction + tooQuietDeduction + deadAirDeduction);
+  const clippingDeduction = totalBlocks > 0 ? (clippingCount / totalBlocks) * 400 : 0;
+  const tooQuietCount = blocks.filter(b => b.state === 'Too Quiet').length;
+  const tooQuietDeduction = totalBlocks > 0 ? (tooQuietCount / totalBlocks) * 100 : 0;
+  const deadAirDeduction = totalDuration > 0 ? (deadAirSeconds / totalDuration) * 300 : 0;
+  
+  score = Math.round(score - (clippingDeduction + tooQuietDeduction + deadAirDeduction));
   score = Math.max(0, Math.min(100, score));
   
   return {

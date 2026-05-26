@@ -258,11 +258,6 @@ class ClipCheckEngine:
         """Calculates final QA score (0-100) based on severity weighting of anomalies."""
         score = 100
         
-        # Penalty configurations
-        clipping_penalty_per_frame = 4.0
-        quiet_penalty_per_frame = 1.0
-        dead_air_penalty_per_second = 3.0
-        
         # Accumulate totals
         clip_count = np.sum(clipping)
         glitch_count = np.sum(glitches)
@@ -271,11 +266,15 @@ class ClipCheckEngine:
         silence_frames = np.sum(silence)
         silence_seconds = silence_frames * 0.1
         
-        deductions = (clip_count * clipping_penalty_per_frame) + \
-                     (glitch_count * quiet_penalty_per_frame) + \
-                     (np.floor(silence_seconds) * dead_air_penalty_per_second)
-                     
-        score = int(max(0, min(100, score - deductions)))
+        # Proportional deductions
+        total_duration = total_frames * 0.1
+        
+        clipping_deduction = (clip_count / total_frames) * 400.0 if total_frames > 0 else 0.0
+        glitch_deduction = (glitch_count / total_frames) * 100.0 if total_frames > 0 else 0.0
+        dead_air_deduction = (silence_seconds / total_duration) * 300.0 if total_duration > 0 else 0.0
+        
+        deductions = clipping_deduction + glitch_deduction + dead_air_deduction
+        score = int(round(max(0, min(100, score - deductions))))
         return score
 
 if __name__ == "__main__":
