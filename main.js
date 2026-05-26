@@ -774,7 +774,6 @@ function displayAnalysisResults(file, results, objectUrl) {
   els.playerPanel.classList.remove('hidden');
   els.logPanel.classList.remove('hidden');
   
-<<<<<<< HEAD
   // Load into HTML audio player
   els.audioPlayer.src = objectUrl;
   els.audioPlayer.load();
@@ -863,7 +862,6 @@ function calculateStatsFromBlocks(blocks, blockDuration = 0.1) {
 }
 
 function updateScoreAndStatsWidget(results) {
-=======
   // --- Vector A Calculations ---
   const blocks = results.blocks || [];
   let sumRms = 0;
@@ -955,8 +953,7 @@ function updateScoreAndStatsWidget(results) {
     }
     els.mathExplanationText.innerHTML = explanation;
   }
-  
->>>>>>> dde5e66 (Updated ClipCheck project)
+
   // 1. Overall Score Ring animation
   els.scoreText.textContent = results.score;
   const dashOffset = 251.2 - (251.2 * results.score) / 100;
@@ -1035,14 +1032,6 @@ function updateScoreAndStatsWidget(results) {
       trackStatus.style.color = 'var(--color-clipping)';
     }
   }
-<<<<<<< HEAD
-=======
-
-  // 4. Generate Timeline Markers
-  generateTimelineMarkers(results);
-  
-  // 5. Populate Log Table
-  populateLogTable(results);
 
   // Show physics panel
   if (els.physicsPanel) {
@@ -1050,11 +1039,14 @@ function updateScoreAndStatsWidget(results) {
   }
 
   // 6. Draw Comparative Waveform
-  drawComparativeWaveform(results);
+  if (typeof drawComparativeWaveform === 'function') {
+    drawComparativeWaveform(results);
+  }
 
   // 7. Populate Second-by-Second Table
-  populateSecondTable(results);
->>>>>>> dde5e66 (Updated ClipCheck project)
+  if (typeof populateSecondTable === 'function') {
+    populateSecondTable(results);
+  }
 }
 
 function generateTimelineMarkers(results) {
@@ -1123,11 +1115,7 @@ function updateLogTable() {
     }
     
     row.innerHTML = `
-<<<<<<< HEAD
-      <td>${item.fileName}</td>
-=======
-      <td style="font-weight: 600; color: var(--accent-cyan);">${currentFile ? currentFile.name : 'Live Input'}</td>
->>>>>>> dde5e66 (Updated ClipCheck project)
+      <td style="font-weight: 600; color: var(--accent-cyan);">${item.fileName}</td>
       <td>${timeStr}</td>
       <td>${stateBadge}</td>
       <td>${item.err.peak.toFixed(1)} dBFS</td>
@@ -1170,7 +1158,6 @@ function bindAudioEvents() {
     // Highlight matching error row in table
     highlightLogTableRow(cur);
     
-<<<<<<< HEAD
     // Dynamically update stats cards during playback
     if (els.audioPlayer && !els.audioPlayer.paused && cur > 0) {
       const nameEl = document.getElementById('player-track-name');
@@ -1183,17 +1170,21 @@ function bindAudioEvents() {
           updateScoreAndStatsWidget(runningStats);
         }
       }
-=======
+    }
+
     // Update playhead on comparative waveform canvas
-    drawPlayheadOnCanvas(cur, dur);
+    if (typeof drawPlayheadOnCanvas === 'function') {
+      drawPlayheadOnCanvas(cur, dur);
+    }
     
     // Highlight second-by-second table row
-    highlightSecondTableRow(cur);
+    if (typeof highlightSecondTableRow === 'function') {
+      highlightSecondTableRow(cur);
+    }
     
     // Update text time indicator above canvas
     if (els.canvasTimeInfo) {
       els.canvasTimeInfo.textContent = `${formatTime(cur)} / ${formatTime(dur)} (Click waveform to seek)`;
->>>>>>> dde5e66 (Updated ClipCheck project)
     }
   });
   

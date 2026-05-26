@@ -1,22 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ClipCheck 3D - Audio Quality Assurance Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;600;700;800&display=swap"
-    rel="stylesheet">
-  <script type="module" crossorigin src="/assets/index-D6d7xCjI.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-CzDbXZjA.css">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="/assets/index-DgrNibGZ.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-CUgIH-ej.css">
 </head>
-
 <body>
-  <!-- 3D Canvas Background Container -->
-  <div id="webgl-container"></div>
 
   <!-- Ambient Glow Effects -->
   <div class="ambient-glow glow-blue"></div>
@@ -40,16 +34,16 @@
 
     <!-- Main Content Grid -->
     <div class="dashboard-grid">
-
+      
       <!-- Left Column: Controls & Configuration -->
       <section class="panel-column left-panel">
-
+        
         <!-- Section: Audio Source Selection -->
         <div class="glass-panel input-panel">
           <div class="panel-header">
             <h2>🎙️ Audio Input Source</h2>
           </div>
-
+          
           <!-- Tab Headers -->
           <div class="tab-headers">
             <button class="tab-btn active" id="tab-upload">Upload File</button>
@@ -65,7 +59,7 @@
               <input type="file" id="file-input" accept="audio/*" class="file-hidden">
               <button class="btn btn-secondary" id="browse-btn">Browse Files</button>
             </div>
-
+            
             <div class="loaded-file-info hidden" id="file-info-container">
               <div class="file-meta">
                 <span class="file-icon">🎵</span>
@@ -107,7 +101,7 @@
                 <span class="score-label">Quality Score</span>
               </div>
             </div>
-
+            
             <div class="stats-cards">
               <div class="stat-card">
                 <span class="stat-icon">📈</span>
@@ -139,7 +133,7 @@
               </div>
             </div>
           </div>
-
+          
           <div class="verdict-banner" id="verdict-banner">
             <h3 id="verdict-title">EXCELLENT AUDIO QUALITY</h3>
             <p id="verdict-desc">Audio exhibits excellent dynamic range and fits professional studio baselines.</p>
@@ -150,7 +144,7 @@
 
       <!-- Right Column: Results & Waveforms -->
       <section class="panel-column right-panel">
-
+        
         <!-- 3D Soundwave Visualizer Panel -->
         <div class="glass-panel visualizer-panel">
           <div class="panel-header">
@@ -203,11 +197,10 @@
                 </div>
               </div>
               <div class="vector-features-list">
-                <p>Vector Dimensions: <code>[Loudness, Peak, Avg Pitch (ZCR), Pitch Variance, High Freq Ratio]</code>
-                </p>
+                <p>Vector Dimensions: <code>[Loudness, Peak, Avg Pitch (ZCR), Pitch Variance, High Freq Ratio]</code></p>
               </div>
             </div>
-
+            
             <div class="math-column alignment-column">
               <h3>Cosine Similarity Matching</h3>
               <div class="similarity-score-container">
@@ -219,7 +212,7 @@
               </div>
             </div>
           </div>
-
+          
           <div class="math-explanation">
             <h3>Quality Index Derivation</h3>
             <p id="math-explanation-text">Waiting for audio ingestion to compute cosine vector matching...</p>
@@ -237,17 +230,17 @@
               <span class="legend-line line-voice"></span> Vocal F0 Curve
             </div>
           </div>
-
+          
           <!-- Comparative Waveform Canvas -->
           <div class="waveform-container">
             <canvas id="compare-waveform-canvas"></canvas>
             <div class="time-slider-info" id="canvas-time-info">0.00s / 0.00s (Click waveform to seek)</div>
           </div>
-
+          
           <div class="second-analysis-title">
             <h3>⏱️ Second-by-Second Pitch & Variance Breakdown</h3>
           </div>
-
+          
           <!-- Second-by-second table -->
           <div class="table-container second-table-container">
             <table class="log-table second-table">
@@ -276,8 +269,7 @@
               <span class="pulse-icon">📊</span>
             </div>
             <h3>Waiting for Audio Track</h3>
-            <p>Upload a file or record audio to run mathematical QA diagnostics and see the interactive 3D audio wave.
-            </p>
+            <p>Upload a file or record audio to run mathematical QA diagnostics and see the interactive 3D audio wave.</p>
           </div>
         </div>
 
@@ -323,7 +315,7 @@
   <!-- Sticky Bottom Audio Player Bar -->
   <div class="sticky-player-bar hidden" id="player-panel">
     <audio id="audio-player" class="audio-element"></audio>
-
+    
     <div class="player-container">
       <!-- Left: Track Details -->
       <div class="player-track-info">
@@ -337,7 +329,7 @@
       <!-- Center: Play/Pause and Timeline -->
       <div class="player-controls-timeline">
         <button class="player-btn" id="play-pause-btn">▶</button>
-
+        
         <div class="player-timeline">
           <span class="time-display" id="time-current">0:00</span>
           <div class="progress-bar-container" id="player-progress-container">
@@ -360,8 +352,6 @@
     </div>
   </div>
 
-  <!-- Script Entry -->
-
+  <!-- Script Entry -->
 </body>
-
 </html>
